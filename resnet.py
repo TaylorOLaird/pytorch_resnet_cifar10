@@ -39,7 +39,7 @@ import os
 from torch.autograd import Variable
 
 __all__ = ['ResNet', 'resnet20', 'resnet32', 'resnet44', 'resnet56', 'resnet110', 'resnet1202']
-MOST = ['resnet20', 'resnet32', 'resnet44', 'resnet56', 'resnet110', 'resnet1202']
+MOST = []
 
 def my_code():
     global MOST
@@ -67,7 +67,7 @@ def my_code():
     weights = ['resnet20-12fca82f.th', 'resnet32-d509ac18.th', 'resnet44-014dd654.th', 'resnet56-4bfd9763.th', 'resnet110-1d1ed7c2.th', 'resnet1202-f3b1deed.th']
 
     for idx, weight in enumerate(weights):
-        cur_model = MOST[idx]
+        cur_model = MOST[idx]()
         cur_block = torch.load(os.path.join("pretrained_models", weight))
         cur_model = torch.nn.DataParallel(cur_model, device_ids=range(torch.cuda.device_count()))
         cur_model.load_state_dict(cur_block['state_dict'])
@@ -225,4 +225,6 @@ if __name__ == "__main__":
     #         print(net_name)
     #         test(globals()[net_name]())
     #         print()
+    global MOST
+    MOST = [resnet20, resnet32, resnet44, resnet56, resnet110, resnet1202]
     my_code()
