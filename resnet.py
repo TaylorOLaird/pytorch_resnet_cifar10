@@ -39,7 +39,7 @@ import os
 from torch.autograd import Variable
 
 __all__ = ['ResNet', 'resnet20', 'resnet32', 'resnet44', 'resnet56', 'resnet110', 'resnet1202']
-MOST = ['resnet20', 'resnet32', 'resnet44', 'resnet56', 'resnet110', 'resnet1202']]
+MOST = ['resnet20', 'resnet32', 'resnet44', 'resnet56', 'resnet110', 'resnet1202']
 
 def my_code():
     global MOST
