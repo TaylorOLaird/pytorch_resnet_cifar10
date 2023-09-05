@@ -31,10 +31,76 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.nn.init as init
+import torchvision.transforms as transforms
+import torchvision.datasets as datasets
+from tqdm import tqdm
+import os
 
 from torch.autograd import Variable
 
 __all__ = ['ResNet', 'resnet20', 'resnet32', 'resnet44', 'resnet56', 'resnet110', 'resnet1202']
+
+
+def my_code():
+    normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                                     std=[0.229, 0.224, 0.225])
+
+    train_loader = torch.utils.data.DataLoader(
+        datasets.CIFAR10(root='./data', train=True, transform=transforms.Compose([
+            transforms.RandomHorizontalFlip(),
+            transforms.RandomCrop(32, 4),
+            transforms.ToTensor(),
+            normalize,
+        ]), download=True),
+        batch_size=128, shuffle=True,
+        num_workers=1, pin_memory=True)
+
+    val_loader = torch.utils.data.DataLoader(
+        datasets.CIFAR10(root='./data', train=False, transform=transforms.Compose([
+            transforms.ToTensor(),
+            normalize,
+        ])),
+        batch_size=128, shuffle=False,
+        num_workers=1, pin_memory=True)
+
+    weights = [torch.load('resnet20-12fca82f.th'), torch.load('resnet32-3b2fe3d4.th'), torch.load('resnet44-014dd654.th'), torch.load('resnet56-4bfd9763.th'), torch.load('resnet110-1d1ed7c2.th'), torch.load('resnet1202-eb4f9b50.th')]
+
+    for weight in weights:
+        cur_block = torch.load(os.path.join("pretrained_models", weight))
+        cur_model = torch.nn.DataParallel(cur_model, device_ids=range(torch.cuda.device_count()))
+        cur_model.load_state_dict(cur_block['state_dict'])
+        cur_model = cur_model.to('cuda')
+
+        cur_model.eval()
+
+        correct = 0
+        total = 0
+
+        for images, labels in tqdm(train_loader):
+            images = images.to('cuda')
+            labels = labels.to('cuda')
+            outputs = cur_model(images)
+            _, predicted = torch.max(outputs.data, 1)
+            total += labels.size(0)
+            correct += (predicted == labels).sum().item()
+
+        train_accuracy = 100 * correct / total
+        print('Accuracy train: %d %%' % train_accuracy)
+
+        correct = 0
+        total = 0
+
+        for images, labels in tqdm(val_loader):
+            images = images.to('cuda')
+            labels = labels.to('cuda')
+            outputs = cur_model(images)
+            _, predicted = torch.max(outputs.data, 1)
+            total += labels.size(0)
+            correct += (predicted == labels).sum().item()
+
+        val_accuracy = 100 * correct / total
+        print('Accuracy val: %d %%' % val_accuracy)
+
 
 def _weights_init(m):
     classname = m.__class__.__name__
@@ -152,8 +218,9 @@ def test(net):
 
 
 if __name__ == "__main__":
-    for net_name in __all__:
-        if net_name.startswith('resnet'):
-            print(net_name)
-            test(globals()[net_name]())
-            print()
+    # for net_name in __all__:
+    #     if net_name.startswith('resnet'):
+    #         print(net_name)
+    #         test(globals()[net_name]())
+    #         print()
+    my_code()
