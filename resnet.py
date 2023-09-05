@@ -66,7 +66,7 @@ def my_code():
 
     weights = ['resnet20-12fca82f.th', 'resnet32-d509ac18.th', 'resnet44-014dd654.th', 'resnet56-4bfd9763.th', 'resnet110-1d1ed7c2.th', 'resnet1202-f3b1deed.th']
 
-    for idx, weight in weights:
+    for idx, weight in enumerate(weights):
         cur_model = MOST[idx]
         cur_block = torch.load(os.path.join("pretrained_models", weight))
         cur_model = torch.nn.DataParallel(cur_model, device_ids=range(torch.cuda.device_count()))
