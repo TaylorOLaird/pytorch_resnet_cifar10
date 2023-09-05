@@ -86,7 +86,7 @@ def my_code():
             correct += (predicted == labels).sum().item()
 
         train_accuracy = 100 * correct / total
-        print('Accuracy train: %d %%' % train_accuracy)
+        print(f"Train accuracy for {weight} is {train_accuracy}")
 
         correct = 0
         total = 0
@@ -100,8 +100,7 @@ def my_code():
             correct += (predicted == labels).sum().item()
 
         val_accuracy = 100 * correct / total
-        print('Accuracy val: %d %%' % val_accuracy)
-
+        print(f"Val accuracy for {weight} is {val_accuracy}")
 
 def _weights_init(m):
     classname = m.__class__.__name__
