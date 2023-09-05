@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2da8627b-214a-4243-81b4-2821c2a3c0b9" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/resnet.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -81,7 +80,7 @@
       <option name="presentableId" value="Default" />
       <updated>1693884434230</updated>
       <workItem from="1693884435529" duration="9667000" />
-      <workItem from="1693894746588" duration="2658000" />
+      <workItem from="1693894746588" duration="2909000" />
     </task>
     <servers />
   </component>

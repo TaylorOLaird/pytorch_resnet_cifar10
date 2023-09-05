@@ -63,7 +63,7 @@ def my_code():
         batch_size=128, shuffle=False,
         num_workers=1, pin_memory=True)
 
-    weights = [torch.load('./pretrained_models/resnet20-12fca82f.th'), torch.load('./pretrained_models/resnet32-3b2fe3d4.th'), torch.load('./pretrained_models/resnet44-014dd654.th'), torch.load('./pretrained_models/resnet56-4bfd9763.th'), torch.load('./pretrained_models/resnet110-1d1ed7c2.th'), torch.load('./pretrained_models/resnet1202-eb4f9b50.th')]
+    weights = [torch.load('./pretrained_models/resnet20-12fca82f.th'), torch.load('./pretrained_models/resnet32-d509ac18.th.th'), torch.load('./pretrained_models/resnet44-014dd654.th'), torch.load('./pretrained_models/resnet56-4bfd9763.th'), torch.load('./pretrained_models/resnet110-1d1ed7c2.th'), torch.load('./pretrained_models/resnet1202-f3b1deed.th')]
 
     for weight in weights:
         cur_block = torch.load(os.path.join("pretrained_models", weight))
